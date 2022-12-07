@@ -217,6 +217,7 @@ public class UserView extends javax.swing.JPanel implements Observer
     private javax.swing.JList newsFeed;
     private javax.swing.JTextField tweetBox;
     private javax.swing.JButton tweetBtn;
+    private javax.swing.JTextField userTime; 
 
     @Override
     public void update(String message, Subject subject) {

@@ -3,6 +3,8 @@ package fake.Twater;
 import java.util.*;
 import java.util.HashMap;
 
+import javax.swing.JButton;
+
 import Patterns.ManagerUser;
 import Patterns.Observer;
 import Patterns.Subject;
@@ -17,6 +19,9 @@ public class User extends ManagerUser implements Subject
     private ArrayList<String> following;
     private ArrayList<String> tweets;
     private ArrayList<Observer> followers;
+    private String uniqueID; 
+    private long creationTime; 
+    private long lastUpdateTime; 
     
     
     public TwatFeed getFeed()
@@ -84,12 +89,29 @@ public class User extends ManagerUser implements Subject
         }
     }
 
+    public boolean checkUserID(User use) {
+        for (int i = 0; i < users.size(); i++) {
+        }
+        return true; 
+    }
+
+    private String generateID(int length) {
+        String weewoo = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        StringBuilder str = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int tinkle = (int) (weewoo.length() * Math.random()); 
+            str.append(weewoo.charAt(tinkle)); 
+        }
+        return str.toString();
+    }
+
+
     @Override
     public void notifyUser()
     {
-        for(Observer obs : followers)
+        for(Observer observe : followers)
         {
-            obs.update(tweets.get(tweets.size()-1), this);
+            observe.update(tweets.get(tweets.size()-1), this);
         }
     }
     public boolean isFollowing(String id)
@@ -119,13 +141,19 @@ public class User extends ManagerUser implements Subject
     public void setFollowing() {
 
     }
-    
-    @Override
-    public void accept(Visitor visit) 
-    {
-        visit.visit(this);
+   
+
+    public long getLastUpdateTime() {
+
+        return lastUpdateTime; 
+
     }
 
+    public void setLastUpdateTime(long updateTime) {
+
+        this.lastUpdateTime = updateTime; 
+    }
+   
     public User(String id, String group)
     {
         if(!users.containsKey(id))
@@ -138,10 +166,20 @@ public class User extends ManagerUser implements Subject
             newsfeed = new TwatFeed();
             this.register(newsfeed);
             users.put(id, this);
+            this.uniqueID = generateID(5); 
+            System.out.println(uniqueID); 
+            this.creationTime = System.currentTimeMillis();
+            System.out.println(creationTime);
         }
         else
         {
             System.out.println("There is already an existing ID."); 
         }
+    }
+
+    @Override
+    public void accept(Visitor visit) {
+        // TODO Auto-generated method stub
+        visit.visit(this); 
     }
 }

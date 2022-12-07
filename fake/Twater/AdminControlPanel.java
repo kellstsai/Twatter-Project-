@@ -1,6 +1,8 @@
 package fake.Twater;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.UUID;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.event.TreeSelectionEvent;
@@ -11,6 +13,8 @@ import javax.swing.tree.DefaultTreeModel;
 import Patterns.UserView;
 import Patterns.VisitM;
 import Patterns.Visited;
+import Patterns.VisitorID;
+import Patterns.lastUpdateTime;
 
 
 public class AdminControlPanel extends javax.swing.JFrame implements TreeSelectionListener
@@ -20,12 +24,23 @@ public class AdminControlPanel extends javax.swing.JFrame implements TreeSelecti
    private Group root;
    private User current;
    private Group currentGroup;
+   public User curr = null; 
+
 
     private AdminControlPanel() {
         root = new Group("Root");
         initComponents();
         current = null;
+
     }
+    public void setCurrentUser(User curr) {
+
+        this.curr = curr; 
+
+        userTime.setText("Creation Time: " + String.valueOf(curr));
+    }
+
+    String uniqueID = UUID.randomUUID().toString();
 
     public DefaultMutableTreeNode getCurrentGroup()
     {
@@ -157,11 +172,26 @@ public class AdminControlPanel extends javax.swing.JFrame implements TreeSelecti
         }
     }
 
+    private void validIDActionPerformed(java.awt.event.ActionEvent evt) {
+        VisitorID visitorID = new VisitorID();
+        if (current != null) {
+            current.accept(visitorID);
+        }
+    }
+
+    private void lastUpdateActionPerformed(java.awt.event.ActionEvent evt) {
+        lastUpdateTime partyhardy = new lastUpdateTime(); 
+        if (current != null) {
+            current.accept(partyhardy);
+        }
+    }
+
     public static AdminControlPanel getInstance()
     {
         return instance;
     }
 
+    private javax.swing.JButton validate; 
     private javax.swing.JButton addGroup;
     private javax.swing.JButton addUser;
     private javax.swing.JTextField groupIDField;
@@ -176,12 +206,15 @@ public class AdminControlPanel extends javax.swing.JFrame implements TreeSelecti
     private javax.swing.JPanel treeView;
     private javax.swing.JTextField userIDField;
     private javax.swing.JButton userTotal;
+    private javax.swing.JTextArea userTime; 
+    private javax.swing.JButton lastUpdate; 
 
 
 
     @SuppressWarnings("unchecked")
     private void initComponents() {
-
+ 
+        validate = new javax.swing.JButton(); 
         treeView = new javax.swing.JPanel();
         sp = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
@@ -196,6 +229,8 @@ public class AdminControlPanel extends javax.swing.JFrame implements TreeSelecti
         groupTotal = new javax.swing.JButton();
         messageTotal = new javax.swing.JButton();
         positiveAmount = new javax.swing.JButton();
+        userTime = new javax.swing.JTextArea();
+        lastUpdate = new javax.swing.JButton(); 
 
         
         jButton1.setText("Open User View");
@@ -232,6 +267,21 @@ public class AdminControlPanel extends javax.swing.JFrame implements TreeSelecti
                 positiveAmountActionPerformed(event);
             }
         });
+
+        validate.setText("ID validation");
+        validate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                validIDActionPerformed(evt);
+            }
+        });
+
+        lastUpdate.setText("Last Update Time");
+        lastUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lastUpdateActionPerformed(evt);
+            }
+        });
+
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -330,11 +380,18 @@ public class AdminControlPanel extends javax.swing.JFrame implements TreeSelecti
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(userTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(groupTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(groupTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lastUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        )    
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(messageTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(positiveAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(positiveAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(validate, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+
+                        ))
                 .addContainerGap())
         );
 
@@ -352,11 +409,16 @@ public class AdminControlPanel extends javax.swing.JFrame implements TreeSelecti
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(userTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(groupTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(groupTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lastUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            )
                         .addGap(1, 1, 1)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(messageTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(positiveAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(positiveAmount, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(validate, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+
+                            ))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(treeView, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))

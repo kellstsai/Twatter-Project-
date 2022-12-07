@@ -1,5 +1,6 @@
 package fake.Twater;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 import Patterns.Observer;
@@ -9,6 +10,7 @@ public class TwatFeed implements Observer, Subject
 {
     ArrayList<String> feed;
     ArrayList<Observer> followers;
+
 
     
     @Override
@@ -35,7 +37,11 @@ public class TwatFeed implements Observer, Subject
     public void update(String message, Subject subject) 
     {
         User user = (User)subject;
-        feed.add(user.getUserID()+ ": " + message);
+        String response = Instant.now().toString(); 
+        feed.add(response + user.getUserID()+ ": " + message);
+        long partytime = System.currentTimeMillis(); 
+        user.setLastUpdateTime(partytime);
+        System.out.println(partytime); 
         notifyUser();
     }
     
