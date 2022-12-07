@@ -166,7 +166,7 @@ public class User extends ManagerUser implements Subject
             newsfeed = new TwatFeed();
             this.register(newsfeed);
             users.put(id, this);
-            this.uniqueID = generateID(5); 
+            this.uniqueID = generateID(10); 
             System.out.println(uniqueID); 
             this.creationTime = System.currentTimeMillis();
             System.out.println(creationTime);
